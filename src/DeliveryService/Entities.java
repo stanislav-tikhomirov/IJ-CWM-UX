@@ -35,6 +35,9 @@ public class Entities {
 
     static class DeliveryContainer {
         public HashMap<UUID, OrderItem> Orders;
+        public Account Account; // New API
+        public AccountManager AccountManager; // New API
+        public Address DeliveryAddress; // New API
         
         public void PackContainer(OrderItem[] orderItems){
             HashMap<UUID, OrderItem> orders = new HashMap<>();
@@ -60,11 +63,23 @@ public class Entities {
             AccountManager = manager;
             DeliveryAddress = address;
         }
+
+        // New API
+        public DeliveryContainer[] ToDeliveryContainerArray(){
+            DeliveryContainer[] containers = Containers.values().toArray(new DeliveryContainer[0]);
+            for (DeliveryContainer c: containers){
+                c.Account = Account;
+                c.AccountManager = AccountManager;
+                c.DeliveryAddress = DeliveryAddress;
+            }
+            return containers;
+        }
     }
 
     static class Transport {
         public UUID TransportId;
         public LinkedHashMap<UUID, DeliveryOrder> Orders;
+        public LinkedHashMap<UUID, DeliveryContainer> Containers; // New API
         public Address CurrentDestination = null;
         public int DestinationTime = 0;
         public int ProgressTime = 0;
@@ -72,11 +87,19 @@ public class Entities {
         public Transport(){
             TransportId = UUID.randomUUID();
             Orders = new LinkedHashMap<>();
+            Containers = new LinkedHashMap<>(); // New API
         }
 
         public void Load(DeliveryOrder[] orders){
             for (DeliveryOrder order: orders) {
                 Orders.put(UUID.randomUUID(), order);
+            }
+        }
+
+        // New API
+        public void Load(DeliveryContainer[] containers){
+            for (DeliveryContainer container: containers){
+                Containers.put(UUID.randomUUID(), container);
             }
         }
 
@@ -96,7 +119,7 @@ public class Entities {
         }
 
         public void run() {
-            Execute();
+            Execute_new();
         }
 
         void Execute(){
@@ -111,6 +134,32 @@ public class Entities {
                     while (Transport.DestinationTime - Transport.ProgressTime != 0) {
                         try {
                             Thread.sleep(200);
+                            Transport.ProgressTime++;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                isActive = false;
+            }
+            else {
+                System.out.printf("Transport %s is empty.%n", Transport.TransportId);
+            }
+        }
+
+        // New API
+        void Execute_new(){
+            if (Transport.Containers.size() > 0){
+                System.out.printf("Transport %s has departed.%n", Transport.TransportId);
+                isActive = true;
+                for (Map.Entry<UUID, DeliveryContainer> container: Transport.Containers.entrySet()) {
+                    Transport.CurrentDestination = container.getValue().DeliveryAddress;
+                    Transport.DestinationTime = ThreadLocalRandom.current().nextInt(10, 100);
+                    Transport.ProgressTime = 0;
+                    CurrentDeliveryId = container.getKey().toString().split("-")[0];
+                    while (Transport.DestinationTime - Transport.ProgressTime != 0) {
+                        try {
+                            Thread.sleep(50);
                             Transport.ProgressTime++;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
