@@ -35,9 +35,9 @@ public class Entities {
 
     static class DeliveryContainer {
         public HashMap<UUID, OrderItem> Orders;
-        public Account Account; // New API
-        public AccountManager AccountManager; // New API
-        public Address DeliveryAddress; // New API
+        public Account Account;
+        public AccountManager AccountManager;
+        public Address DeliveryAddress;
         
         public void PackContainer(OrderItem[] orderItems){
             HashMap<UUID, OrderItem> orders = new HashMap<>();
@@ -64,7 +64,6 @@ public class Entities {
             DeliveryAddress = address;
         }
 
-        // New API
         public DeliveryContainer[] ToDeliveryContainerArray(){
             DeliveryContainer[] containers = Containers.values().toArray(new DeliveryContainer[0]);
             for (DeliveryContainer c: containers){
@@ -79,7 +78,7 @@ public class Entities {
     static class Transport {
         public UUID TransportId;
         public LinkedHashMap<UUID, DeliveryOrder> Orders;
-        public LinkedHashMap<UUID, DeliveryContainer> Containers; // New API
+        public LinkedHashMap<UUID, DeliveryContainer> Containers;
         public Address CurrentDestination = null;
         public int DestinationTime = 0;
         public int ProgressTime = 0;
@@ -87,7 +86,7 @@ public class Entities {
         public Transport(){
             TransportId = UUID.randomUUID();
             Orders = new LinkedHashMap<>();
-            Containers = new LinkedHashMap<>(); // New API
+            Containers = new LinkedHashMap<>();
         }
 
         public void Load(DeliveryOrder[] orders){
@@ -96,7 +95,6 @@ public class Entities {
             }
         }
 
-        // New API
         public void Load(DeliveryContainer[] containers){
             for (DeliveryContainer container: containers){
                 Containers.put(UUID.randomUUID(), container);
@@ -147,7 +145,6 @@ public class Entities {
             }
         }
 
-        // New API
         void Execute_new(){
             if (Transport.Containers.size() > 0){
                 System.out.printf("Transport %s has departed.%n", Transport.TransportId);
