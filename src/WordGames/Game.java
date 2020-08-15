@@ -6,14 +6,14 @@ public class Game {
 
     static class GameOne{
         public static void main(String[] args){
-            FirstNames firstNames = new FirstNames();
-            LastNames lastNames = new LastNames();
-            if (firstNames.values.length == lastNames.values.length){
-                System.out.println("Let's see whom we got here...");
-                for (int i = 0; i < firstNames.values.length; i++) {
-                    System.out.printf("%s %s %n", firstNames.values[i], lastNames.values[i]);
+            Countries countries = new Countries();
+            Capitals capitals = new Capitals();
+            if (countries.values.length == capitals.values.length){
+                System.out.println("Let's see what we got here...");
+                for (int i = 0; i < countries.values.length; i++) {
+                    System.out.printf("%s - %s %n", countries.values[i], capitals.values[i]);
                 }
-                System.out.println("Nice!");
+                System.out.println("Nice?");
             }
             else {
                 System.out.println("Arrays are not equal!");

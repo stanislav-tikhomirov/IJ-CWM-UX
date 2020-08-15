@@ -1,9 +1,9 @@
 package WordGames;
 
-public class LastNames {
+public class Capitals {
     public String[] values;
 
-    public LastNames(){
+    public Capitals(){
         values = new String[] {
                 // Put your ideas here!
         };

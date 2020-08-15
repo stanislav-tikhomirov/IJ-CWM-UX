@@ -1,9 +1,9 @@
 package WordGames;
 
-public class FirstNames {
+public class Countries {
     public String[] values;
 
-    public FirstNames(){
+    public Countries(){
         values = new String[] {
                 // Put your ideas here!
         };
