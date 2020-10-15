@@ -1,6 +1,6 @@
 package WordGames;
 
-import sun.jvm.hotspot.utilities.Assert;
+import Assertion.Assert;
 
 public class Game {
 

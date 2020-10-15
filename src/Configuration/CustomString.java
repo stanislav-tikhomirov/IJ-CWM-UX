@@ -1,6 +1,6 @@
 package Configuration;
 
-import sun.jvm.hotspot.utilities.Assert;
+import Assertion.Assert;
 
 public class CustomString {
     public static String ToCustomString(String input) {
